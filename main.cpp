@@ -81,7 +81,7 @@ void searchBST(BST &bst, ifstream &inputFile)
         while (getline(next_line, number_str, ','))
         {
             long long int number = stoll(number_str);
-            bst.get(number);
+            bst.contains(number);
         }
     }
 }
@@ -194,7 +194,7 @@ void searchRedBlackTree(RBTree &rbTree, ifstream &inputFile)
         while (getline(next_line, number_str, ','))
         {
             long long int number = stoll(number_str);
-            rbTree.get(number);
+            rbTree.contains(number);
         }
     }
 }
