@@ -86,6 +86,55 @@ void searchBST(BST &bst, ifstream &inputFile)
     }
 }
 
+void deleteBST(BST &bst, ifstream &inputFile)
+{
+    string line;
+    while (getline(inputFile, line))
+    {
+        stringstream next_line(line);
+        string number_str;
+
+        while (getline(next_line, number_str, ','))
+        {
+            long long int number = stoll(number_str);
+            bst.del(number);
+        }
+    }
+}
+
+void deleteSplayTree(SplayTree &splayTree, ifstream &inputFile)
+{
+    string line;
+    while (getline(inputFile, line))
+    {
+        stringstream next_line(line);
+        string number_str;
+
+        while (getline(next_line, number_str, ','))
+        {
+            long long int number = stoll(number_str);
+            splayTree.del(number);
+        }
+    }
+}
+
+// Method to perform deletion operation for Red-Black Tree
+void deleteRedBlackTree(RBTree &rbTree, ifstream &inputFile)
+{
+    string line;
+    while (getline(inputFile, line))
+    {
+        stringstream next_line(line);
+        string number_str;
+
+        while (getline(next_line, number_str, ','))
+        {
+            long long int number = stoll(number_str);
+            rbTree.del(number);
+        }
+    }
+}
+
 void insertSplayTree(SplayTree &splayTree, ifstream &inputFile)
 {
     string line;
@@ -164,9 +213,11 @@ int main()
 
             string fileName = "data/data/insert/set" + to_string(set) + "/data_" + to_string(i) + ".txt";
             string searchFileName = "data/data/search/set" + to_string(set) + "/data_" + to_string(i) + ".txt";
+            string deleteFileName = "data/data/delete/set" + to_string(set) + "/data_" + to_string(i) + ".txt";
 
             ifstream inputFile(fileName);
             ifstream searchFile(searchFileName);
+            ifstream deleteFile(deleteFileName);
 
             if (!inputFile.is_open())
             {
@@ -177,6 +228,12 @@ int main()
             if (!searchFile.is_open())
             {
                 cerr << "Error: Unable to open search file: " << searchFileName << endl;
+                return 1;
+            }
+
+            if (!deleteFile.is_open())
+            {
+                cerr << "Error: Unable to open delete  file: " << deleteFileName << endl;
                 return 1;
             }
 
@@ -198,6 +255,15 @@ int main()
             searchFile.close();
 
             cout << "BST search time: " << duration_search_bst.count() << " microseconds" << endl;
+
+            auto start_delete_bst = high_resolution_clock::now();
+            deleteBST(bst, deleteFile);
+            auto stop_delete_bst = high_resolution_clock::now();
+            auto duration_delete_bst = duration_cast<microseconds>(stop_delete_bst - start_delete_bst);
+            deleteFile.close();
+
+            cout << "BST deletion time: " << duration_delete_bst.count() << " microseconds" << endl;
+
             cout << endl;
 
             inputFile.open(fileName);
@@ -217,6 +283,16 @@ int main()
             searchFile.close();
 
             cout << "Splay tree search time: " << duration_search_splaytree.count() << " microseconds" << endl;
+
+            deleteFile.open(deleteFileName);
+            auto start_delete_splaytree = high_resolution_clock::now();
+            deleteSplayTree(splayTree, deleteFile);
+            auto stop_delete_splaytree = high_resolution_clock::now();
+            auto duration_delete_splaytree = duration_cast<microseconds>(stop_delete_splaytree - start_delete_splaytree);
+            deleteFile.close();
+
+            cout << "Splay Tree deletion time: " << duration_delete_splaytree.count() << " microseconds" << endl;
+
             cout << endl;
 
             inputFile.open(fileName);
@@ -236,6 +312,15 @@ int main()
             searchFile.close();
 
             cout << "Red-Black tree search time: " << duration_search_rbtree.count() << " microseconds" << endl;
+
+            deleteFile.open(deleteFileName);
+            auto start_delete_rbtree = high_resolution_clock::now();
+            deleteRedBlackTree(rbTree, deleteFile);
+            auto stop_delete_rbtree = high_resolution_clock::now();
+            auto duration_delete_rbtree = duration_cast<microseconds>(stop_delete_rbtree - start_delete_rbtree);
+            deleteFile.close();
+
+            cout << "Red-Black Tree deletion time: " << duration_delete_rbtree.count() << " microseconds" << endl;
 
             cout << endl;
         }
