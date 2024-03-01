@@ -102,6 +102,22 @@ void insertSplayTree(SplayTree &splayTree, ifstream &inputFile)
     }
 }
 
+void searchSplayTree(SplayTree &splayTree, ifstream &inputFile)
+{
+    string line;
+    while (getline(inputFile, line))
+    {
+        stringstream next_line(line);
+        string number_str;
+
+        while (getline(next_line, number_str, ','))
+        {
+            long long int number = stoll(number_str);
+            splayTree.contains(number);
+        }
+    }
+}
+
 void insertRedBlackTree(RBTree &rbTree, ifstream &inputFile)
 {
     string line;
@@ -114,6 +130,22 @@ void insertRedBlackTree(RBTree &rbTree, ifstream &inputFile)
         {
             long long int number = stoll(number_str);
             rbTree.put(number, number);
+        }
+    }
+}
+
+void searchRedBlackTree(RBTree &rbTree, ifstream &inputFile)
+{
+    string line;
+    while (getline(inputFile, line))
+    {
+        stringstream next_line(line);
+        string number_str;
+
+        while (getline(next_line, number_str, ','))
+        {
+            long long int number = stoll(number_str);
+            rbTree.get(number);
         }
     }
 }
@@ -179,7 +211,7 @@ int main()
 
             searchFile.open(searchFileName);
             auto start_search_splaytree = high_resolution_clock::now();
-            searchBST(bst, searchFile);
+            searchSplayTree(splayTree, searchFile);
             auto stop_search_splaytree = high_resolution_clock::now();
             auto duration_search_splaytree = duration_cast<microseconds>(stop_search_splaytree - start_search_splaytree);
             searchFile.close();
@@ -198,7 +230,7 @@ int main()
 
             searchFile.open(searchFileName);
             auto start_search_rbtree = high_resolution_clock::now();
-            searchBST(bst, searchFile);
+            searchRedBlackTree(rbTree, searchFile);
             auto stop_search_rbtree = high_resolution_clock::now();
             auto duration_search_rbtree = duration_cast<microseconds>(stop_search_rbtree - start_search_rbtree);
             searchFile.close();
